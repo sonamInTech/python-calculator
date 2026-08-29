@@ -2,6 +2,32 @@ import tkinter as tk
 
 
 # --------------------------------
+# COLOR THEME
+# --------------------------------
+
+COLOR_BG = "#1e1f29"
+COLOR_DISPLAY_BG = "#282a3a"
+COLOR_DISPLAY_FG = "#ffffff"
+COLOR_TEXT_MUTED = "#8b8fa3"
+
+COLOR_NUMBER_BG = "#323548"
+COLOR_NUMBER_HOVER = "#3d4160"
+COLOR_NUMBER_FG = "#ffffff"
+
+COLOR_OPERATOR_BG = "#ff9f43"
+COLOR_OPERATOR_HOVER = "#ffb976"
+COLOR_OPERATOR_FG = "#1e1f29"
+
+COLOR_FUNCTION_BG = "#4a4e69"
+COLOR_FUNCTION_HOVER = "#5c6088"
+COLOR_FUNCTION_FG = "#ffffff"
+
+COLOR_EQUALS_BG = "#00c896"
+COLOR_EQUALS_HOVER = "#33d6ac"
+COLOR_EQUALS_FG = "#1e1f29"
+
+
+# --------------------------------
 # CALCULATOR FUNCTIONS
 # --------------------------------
 
@@ -131,34 +157,81 @@ def keyboard_input(event):
 
 
 # --------------------------------
+# BUTTON STYLE HELPERS
+# --------------------------------
+
+def style_for(value):
+    """Return (bg, hover_bg, fg) colors depending on button type."""
+
+    if value in ("C", "⌫", "%", "( )"):
+        return COLOR_FUNCTION_BG, COLOR_FUNCTION_HOVER, COLOR_FUNCTION_FG
+
+    if value in ("÷", "×", "−", "+"):
+        return COLOR_OPERATOR_BG, COLOR_OPERATOR_HOVER, COLOR_OPERATOR_FG
+
+    if value == "=":
+        return COLOR_EQUALS_BG, COLOR_EQUALS_HOVER, COLOR_EQUALS_FG
+
+    return COLOR_NUMBER_BG, COLOR_NUMBER_HOVER, COLOR_NUMBER_FG
+
+
+def on_enter(event, hover_color):
+    event.widget.configure(bg=hover_color)
+
+
+def on_leave(event, base_color):
+    event.widget.configure(bg=base_color)
+
+
+# --------------------------------
 # MAIN WINDOW
 # --------------------------------
 
 root = tk.Tk()
 
-root.title("My Calculator")
-root.geometry("500x700")
-root.minsize(400, 600)
+root.title("Calculator")
+root.geometry("400x600")
+root.minsize(340, 520)
+root.configure(bg=COLOR_BG)
 
 
 # --------------------------------
-# DISPLAY
+# DISPLAY AREA
 # --------------------------------
+
+display_frame = tk.Frame(root, bg=COLOR_DISPLAY_BG)
+display_frame.pack(fill="x", padx=0, pady=0)
+
+mode_label = tk.Label(
+    display_frame,
+    text="STANDARD",
+    font=("Segoe UI", 10, "bold"),
+    bg=COLOR_DISPLAY_BG,
+    fg=COLOR_TEXT_MUTED,
+    anchor="e"
+)
+mode_label.pack(fill="x", padx=20, pady=(18, 0))
 
 display_var = tk.StringVar()
 
 display = tk.Entry(
-    root,
+    display_frame,
     textvariable=display_var,
-    font=("Consolas", 32),
-    justify="right"
+    font=("Consolas", 40, "bold"),
+    justify="right",
+    bd=0,
+    relief="flat",
+    bg=COLOR_DISPLAY_BG,
+    fg=COLOR_DISPLAY_FG,
+    insertbackground=COLOR_DISPLAY_FG,
+    highlightthickness=0
 )
 
 display.pack(
     fill="x",
-    padx=15,
-    pady=20,
-    ipady=20
+    padx=20,
+    pady=(5, 25),
+    ipady=10
 )
 
 display.focus_set()
@@ -168,13 +241,13 @@ display.focus_set()
 # BUTTON FRAME
 # --------------------------------
 
-button_frame = tk.Frame(root)
+button_frame = tk.Frame(root, bg=COLOR_BG)
 
 button_frame.pack(
     fill="both",
     expand=True,
-    padx=10,
-    pady=10
+    padx=12,
+    pady=12
 )
 
 
@@ -222,20 +295,32 @@ for row_index, row in enumerate(buttons):
 
     for column_index, value in enumerate(row):
 
+        base_color, hover_color, fg_color = style_for(value)
+
         button = tk.Button(
             button_frame,
             text=value,
-            font=("Consolas", 20),
+            font=("Segoe UI", 18, "bold"),
+            bg=base_color,
+            fg=fg_color,
+            activebackground=hover_color,
+            activeforeground=fg_color,
+            bd=0,
+            relief="flat",
+            cursor="hand2",
             command=lambda value=value: button_click(value)
         )
 
         button.grid(
             row=row_index,
             column=column_index,
-            padx=5,
-            pady=5,
+            padx=6,
+            pady=6,
             sticky="nsew"
         )
+
+        button.bind("<Enter>", lambda e, h=hover_color: on_enter(e, h))
+        button.bind("<Leave>", lambda e, b=base_color: on_leave(e, b))
 
 
 # --------------------------------
