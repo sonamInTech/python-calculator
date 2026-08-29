@@ -6,7 +6,6 @@ A simple, modern-looking GUI calculator built using Python and Tkinter.
 
 <img src="image/calculator-screenshot.png.png" alt="Python Calculator Screenshot" width="220">
 
-*(Screenshot shown is from the previous version — replace it with a new one after running the updated app if you'd like.)*
 
 ## Features
 
