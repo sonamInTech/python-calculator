@@ -2,6 +2,10 @@
 
 A simple GUI calculator built using Python and Tkinter.
 
+## Screenshot
+
+![Python Calculator Screenshot](image/calculator-screenshot.png)
+
 ## Features
 
 - Addition
@@ -11,11 +15,6 @@ A simple GUI calculator built using Python and Tkinter.
 - Decimal calculations
 - Percentage
 - Parentheses
-- Clear button
-- Backspace button
-- Keyboard support
-- Error handling
-- Responsive button layout
 
 ## Technologies Used
 
@@ -30,4 +29,3 @@ A simple GUI calculator built using Python and Tkinter.
 
 ```bash
 python main.py
-
