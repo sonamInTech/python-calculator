@@ -4,7 +4,7 @@ A simple GUI calculator built using Python and Tkinter.
 
 ## Screenshot
 
-![Python Calculator Screenshot](image/calculator-screenshot.png)
+<img src="image/calculator-screenshot.png" width="350">
 
 ## Features
 
